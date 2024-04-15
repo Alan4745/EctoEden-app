@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Dimensions, ScrollView, Image, Button } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import HeaderComponent from '../Components/HomeComponent/HeaderComponent';
@@ -10,10 +10,12 @@ import ProgressBar from '../Components/HomeComponent/ProgressBar';
 import PieChart from 'react-native-pie-chart';
 import RingProgressBar from '../Components/HomeComponent/RingProgressBar';
 import CheckboxComponente from '../Components/HomeComponent/CheckboxComponente';
+import { AuthContext } from '../Context/AuthContext';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 export default function Home() {
+  const { Identidad } = useContext(AuthContext);
 
   const [isChecked, setChecked] = useState(false);
 
@@ -32,8 +34,49 @@ export default function Home() {
     // Agrega más tareas según sea necesario
   ]);
 
+  interface Task {
+    id: number;
+    name: string;
+    completed: boolean;
+  }
 
 
+  function convertToTaskObjects(taskTitles: string[]): Task[] {
+    // Inicializamos un array vacío para almacenar los objetos de tarea
+    let tasks: Task[] = [];
+
+    // Iteramos sobre el array de títulos de tarea
+    for (let i = 0; i < taskTitles.length; i++) {
+      // Creamos un objeto de tarea
+      let taskObject: Task = {
+        id: i + 1, // Podrías ajustar el ID según tus necesidades
+        name: taskTitles[i],
+        completed: false // Por defecto, la tarea no está completada
+      };
+
+      // Agregamos el objeto de tarea al array de tareas
+      tasks.push(taskObject);
+    }
+
+    // Devolvemos el array de objetos de tarea
+    return tasks;
+  }
+
+  useEffect(() => {
+    // console.log(Identidad.plant.tasks_to_do)
+    if (Identidad !== undefined && Identidad !== null) {
+      // const tasks1: Task[] = convertToTaskObjects(Identidad.plant.tasks_to_do);
+      // console.log(tasks1)
+      console.log(Identidad)
+    } else {
+      console.log(Identidad, "vacio")
+
+    }
+
+    // const tasks1: Task[] = convertToTaskObjects(Identidad.plant.tasks_to_do);
+    // console.log(tasks1)
+    // setTasks(tasks1)
+  }, []);
 
   const [percentage, setPercentage] = useState(0);
 

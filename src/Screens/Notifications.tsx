@@ -38,8 +38,9 @@ export default function Notifications() {
 
               <>
 
-                {notificacionContet.map(item => (
+                {notificacionContet.map((item, index) => (
                   <Notification
+                    key={index}
                     imageSource={image1}
                     title={item.notification}
                     message={item.content}
